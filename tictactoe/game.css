@@ -1,0 +1,30 @@
+div.title {
+    display: flex;
+    justify-content: center;
+}
+
+div.wrapperDiv{
+    display: flex;
+    justify-content: center;
+}
+
+div.gameBoard {
+    display: flex;
+    flex-direction: column;
+    width: 514px;
+    border: 2px solid #A40000;   
+}
+
+.gameBoard > div {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid blue;   
+}
+
+.gameBoard > div > div{
+    border: 2px solid purple;
+}
+
+.squareImage{
+    width: 150px
+}

@@ -9,8 +9,11 @@ const game = (function(){
     const fillSquare = (row, col) => {
         if(board[row][col] == 0){
             board[row][col] = playerID;
+            (playerID == 1) ? playerID=2 : playerID=1
         }
-        (playerID==1) ? playerID=2 : playerID=1
+        else{
+            console.log("Invalid move, spot is taken")
+        }
     }
 
     /*  
@@ -82,7 +85,21 @@ const game = (function(){
             return 2
         }
 
-        return 0
+        let total = 0;
+        for (row in board){
+            for (col in col){
+                if(board[row][col] != 0) total +=1;
+            }
+        }
+
+        if (total == 9)
+            return 3
+        else
+            return 0
+    }
+
+    const isFilled = (row, col) => {
+        return board[row][col] != 0
     }
 
     const getBoardState = () => {
@@ -93,11 +110,10 @@ const game = (function(){
         return playerID
     }
 
-    return { fillSquare, checkIfWin, clearBoard, getBoardState, getPlayerID }
+    return { fillSquare, checkIfWin, clearBoard, isFilled, getBoardState, getPlayerID }
 })();
 
-
-let winner = 0
+/* let winner = 0
 
 while(winner == 0){
     console.log("player: " + game.getPlayerID());
@@ -110,3 +126,80 @@ while(winner == 0){
 }
 
 console.log("Winner: Player " + winner )
+ */
+
+
+
+const gameDocument = document.querySelector(".gameBoard");
+
+const square1 = document.querySelector(".firstRow").querySelector(".firstCol");
+square1.addEventListener("click", (event) => {
+    if (! game.isFilled(0,0)){
+        (game.getPlayerID() == 1) ? square1.querySelector(".squareImage").src = "cross.png" : square1.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(0,0);
+    }
+});
+
+const square2 = document.querySelector(".firstRow").querySelector(".secondCol");
+square2.addEventListener("click", (event) => {
+    if (! game.isFilled(0,1)){
+        (game.getPlayerID() == 1) ? square2.querySelector(".squareImage").src = "cross.png" : square2.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(0,1);
+    }
+});
+
+const square3 = document.querySelector(".firstRow").querySelector(".thirdCol");
+square3.addEventListener("click", (event) => {
+    if (! game.isFilled(0,2)){
+        (game.getPlayerID() == 1) ? square3.querySelector(".squareImage").src = "cross.png" : square3.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(0,2);
+    }
+});
+
+const square4 = document.querySelector(".secondRow").querySelector(".firstCol");
+square4.addEventListener("click", (event) => {
+    if (! game.isFilled(1,0)){
+        (game.getPlayerID() == 1) ? square4.querySelector(".squareImage").src = "cross.png" : square4.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(1,0);
+    }
+});
+
+const square5 = document.querySelector(".secondRow").querySelector(".secondCol");
+square5.addEventListener("click", (event) => {
+    if (! game.isFilled(1,1)){
+        (game.getPlayerID() == 1) ? square5.querySelector(".squareImage").src = "cross.png" : square5.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(1,1);
+    }
+});
+
+const square6 = document.querySelector(".secondRow").querySelector(".thirdCol");
+square6.addEventListener("click", (event) => {
+    if (! game.isFilled(1,2)){
+        (game.getPlayerID() == 1) ? square6.querySelector(".squareImage").src = "cross.png" : square6.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(1,2);
+    }
+});
+
+const square7 = document.querySelector(".thirdRow").querySelector(".firstCol");
+square7.addEventListener("click", (event) => {
+    if (! game.isFilled(2,0)){
+        (game.getPlayerID() == 1) ? square7.querySelector(".squareImage").src = "cross.png" : square7.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(2,0);
+    }
+});
+
+const square8 = document.querySelector(".thirdRow").querySelector(".secondCol");
+square8.addEventListener("click", (event) => {
+    if (! game.isFilled(2,1)){
+        (game.getPlayerID() == 1) ? square8.querySelector(".squareImage").src = "cross.png" : square8.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(2,1);
+    }
+});
+
+const square9 = document.querySelector(".thirdRow").querySelector(".thirdCol");
+square9.addEventListener("click", (event) => {
+    if (! game.isFilled(2,2)){
+        (game.getPlayerID() == 1) ? square9.querySelector(".squareImage").src = "cross.png" : square9.querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(2,2);
+    }
+});
