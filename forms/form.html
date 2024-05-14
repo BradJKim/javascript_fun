@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>This is a thing</p>
+
+    <form action="">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name">
+    </form>
+    
+    <button class="submit_button">Greet</button>
+
+    <select name="Car" id="CarSelect">
+        <option value="a">A</option>
+        <option value="b">B</option>
+        <option value="c" selected>C</option>
+    </select>
+
+    <!-- <select name="fashion">
+        <optgroup label="Clothing">
+          <option value="t_shirt">T-Shirts</option>
+          <option value="sweater">Sweaters</option>
+          <option value="coats">Coats</option>
+        </optgroup>
+        <optgroup label="Foot Wear">
+          <option value="sneakers">Sneakers</option>
+          <option value="boots">Boots</option>
+          <option value="sandals">Sandals</option>
+        </optgroup>
+      </select> -->
+
+    <h1>Ticket Type</h1>
+    <div>
+        <input type="radio" id="child" name="ticket_type" value="child">
+        <label for="child">Child</label>
+    </div>
+
+    <div>
+        <input type="radio" id="adult" name="ticket_type" value="adult" checked>
+        <label for="adult">Adult</label>
+    </div>
+
+    <div>
+        <input type="radio" id="senior" name="ticket_type" value="senior">
+        <label for="senior">Senior</label>
+    </div>
+
+    <div>
+        <input type="checkbox" id="child" name="ticket_type" value="child" checked>
+        <label for="child">Child</label>
+    </div>
+
+    <div>
+        <input type="radio" id="senior" name="random" value="senior">
+        <label for="senior">Senior</label>
+    </div>
+
+    <fieldset>
+        <legend>Contact Details</legend>
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name">
+      
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name">
+
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+      </fieldset>
+
+    <script src="handle.js"></script>
+</body>
+</html>
