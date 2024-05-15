@@ -1,6 +1,7 @@
 const game = (function(){
     let board = [[0,0,0],[0,0,0],[0,0,0]]
     let playerID = 1 
+    let totalCount = 0;
 
     /*  
         Fills board sqaure with playerID and swaps players after square is filled
@@ -10,6 +11,7 @@ const game = (function(){
         if(board[row][col] == 0){
             board[row][col] = playerID;
             (playerID == 1) ? playerID=2 : playerID=1
+            totalCount +=1;
         }
         else{
             console.log("Invalid move, spot is taken")
@@ -21,11 +23,13 @@ const game = (function(){
         args: None
     */
     const clearBoard = () => {
-        for (row in board){
-            for (col in board){
-                board[row][col] = 0
+        for (let i=0; i<3; i++){
+            for (let j=0; j<3; j++){
+                board[i][j] = 0;
             }
         }
+        playerID = 1;
+        totalCount = 0;
     }
 
     /*  
@@ -36,9 +40,9 @@ const game = (function(){
     const checkIfWin = () => {
         // 8 methods of winning, 2 players can win
         // player 1
-        const winMapP1 = {
+        let winMapP1 = {
             ...(board[0][0] == 1 && board[1][1] == 1 && board[2][2] == 1 && { diagonalLeft: true }),
-            ...(board[2][2] == 1 && board[1][1] == 1 && board[0][0] == 1 && { diagonalRight: true }),
+            ...(board[2][0] == 1 && board[1][1] == 1 && board[0][2] == 1 && { diagonalRight: true }),
             ...(board[0][0] == 1 && board[0][1] == 1 && board[0][2] == 1 && { firstRow: true }),
             ...(board[1][0] == 1 && board[1][1] == 1 && board[1][2] == 1 && { secondRow: true }),
             ...(board[2][0] == 1 && board[2][1] == 1 && board[2][2] == 1 && { thirdRow: true }),
@@ -46,7 +50,6 @@ const game = (function(){
             ...(board[0][1] == 1 && board[1][1] == 1 && board[2][1] == 1 && { secondCol: true }),
             ...(board[0][2] == 1 && board[1][2] == 1 && board[2][2] == 1 && { thirdCol: true })
         }
-
         if(
             winMapP1['diagonalLeft'] ||
             winMapP1['diagonalRight'] ||
@@ -61,9 +64,9 @@ const game = (function(){
         }
 
         // player 2
-        const winMapP2 = {
+        let winMapP2 = {
             ...(board[0][0] == 2 && board[1][1] == 2 && board[2][2] == 2 && { diagonalLeft: true }),
-            ...(board[2][2] == 2 && board[1][1] == 2 && board[0][0] == 2 && { diagonalRight: true }),
+            ...(board[2][0] == 2 && board[1][1] == 2 && board[0][2] == 2 && { diagonalRight: true }),
             ...(board[0][0] == 2 && board[0][1] == 2 && board[0][2] == 2 && { firstRow: true }),
             ...(board[1][0] == 2 && board[1][1] == 2 && board[1][2] == 2 && { secondRow: true }),
             ...(board[2][0] == 2 && board[2][1] == 2 && board[2][2] == 2 && { thirdRow: true }),
@@ -71,7 +74,6 @@ const game = (function(){
             ...(board[0][1] == 2 && board[1][1] == 2 && board[2][1] == 2 && { secondCol: true }),
             ...(board[0][2] == 2 && board[1][2] == 2 && board[2][2] == 2 && { thirdCol: true })
         }
-
         if(
             winMapP2['diagonalLeft'] ||
             winMapP2['diagonalRight'] ||
@@ -85,14 +87,7 @@ const game = (function(){
             return 2
         }
 
-        let total = 0;
-        for (row in board){
-            for (col in col){
-                if(board[row][col] != 0) total +=1;
-            }
-        }
-
-        if (total == 9)
+        if (totalCount == 9)
             return 3
         else
             return 0
@@ -128,78 +123,77 @@ while(winner == 0){
 console.log("Winner: Player " + winner )
  */
 
-
-
 const gameDocument = document.querySelector(".gameBoard");
+const endingText = document.querySelector(".endingText");
+
+let gameEnd = false;
+
+const checkWin = () => {
+    winNum = game.checkIfWin();
+
+    if(winNum == 0){
+        return ""
+    }
+    if(winNum == 1){
+        gameEnd = true;
+        return "Game Over! Player 1 Wins"
+    }
+    if(winNum == 2){
+        gameEnd = true;
+        return "Game Over! Player 2 Wins"
+    }
+    if(winNum == 3){
+        gameEnd = true;
+        return "Game Over! Draw"
+    }
+}
+
+const resetGame = () => {
+    game.clearBoard()
+    gameEnd = false;
+    endingText.innerHTML = "";
+    let squares = gameDocument.querySelectorAll(".squareImage");
+    for (let i = 0; i < squares.length; i++) {
+        squares[i].src = "square.jpg";
+    }
+}
+
+const handleOnClick = (row, col, rowName, colName) => {
+    if (! game.isFilled(row, col) && gameEnd == false){
+        (game.getPlayerID() == 1) ? 
+            gameDocument.querySelector(rowName).querySelector(colName).querySelector(".squareImage").src = "cross.png" : 
+            gameDocument.querySelector(rowName).querySelector(colName).querySelector(".squareImage").src = "circle.jpg" 
+        game.fillSquare(row, col);
+        endingText.innerHTML = checkWin();
+    }
+}
+
+const button = document.querySelector(".resetButton");
+button.addEventListener("click", (event) => { resetGame() });
 
 const square1 = document.querySelector(".firstRow").querySelector(".firstCol");
-square1.addEventListener("click", (event) => {
-    if (! game.isFilled(0,0)){
-        (game.getPlayerID() == 1) ? square1.querySelector(".squareImage").src = "cross.png" : square1.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(0,0);
-    }
-});
+square1.addEventListener("click", (event) => { handleOnClick(0, 0, ".firstRow", ".firstCol") });
 
 const square2 = document.querySelector(".firstRow").querySelector(".secondCol");
-square2.addEventListener("click", (event) => {
-    if (! game.isFilled(0,1)){
-        (game.getPlayerID() == 1) ? square2.querySelector(".squareImage").src = "cross.png" : square2.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(0,1);
-    }
-});
+square2.addEventListener("click", (event) => { handleOnClick(0, 1, ".firstRow", ".secondCol") });
 
 const square3 = document.querySelector(".firstRow").querySelector(".thirdCol");
-square3.addEventListener("click", (event) => {
-    if (! game.isFilled(0,2)){
-        (game.getPlayerID() == 1) ? square3.querySelector(".squareImage").src = "cross.png" : square3.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(0,2);
-    }
-});
+square3.addEventListener("click", (event) => { handleOnClick(0, 2, ".firstRow", ".thirdCol") });
 
 const square4 = document.querySelector(".secondRow").querySelector(".firstCol");
-square4.addEventListener("click", (event) => {
-    if (! game.isFilled(1,0)){
-        (game.getPlayerID() == 1) ? square4.querySelector(".squareImage").src = "cross.png" : square4.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(1,0);
-    }
-});
+square4.addEventListener("click", (event) => { handleOnClick(1, 0, ".secondRow", ".firstCol") });
 
 const square5 = document.querySelector(".secondRow").querySelector(".secondCol");
-square5.addEventListener("click", (event) => {
-    if (! game.isFilled(1,1)){
-        (game.getPlayerID() == 1) ? square5.querySelector(".squareImage").src = "cross.png" : square5.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(1,1);
-    }
-});
+square5.addEventListener("click", (event) => { handleOnClick(1, 1, ".secondRow", ".secondCol") });
 
 const square6 = document.querySelector(".secondRow").querySelector(".thirdCol");
-square6.addEventListener("click", (event) => {
-    if (! game.isFilled(1,2)){
-        (game.getPlayerID() == 1) ? square6.querySelector(".squareImage").src = "cross.png" : square6.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(1,2);
-    }
-});
+square6.addEventListener("click", (event) => { handleOnClick(1, 2, ".secondRow", ".thirdCol") });
 
 const square7 = document.querySelector(".thirdRow").querySelector(".firstCol");
-square7.addEventListener("click", (event) => {
-    if (! game.isFilled(2,0)){
-        (game.getPlayerID() == 1) ? square7.querySelector(".squareImage").src = "cross.png" : square7.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(2,0);
-    }
-});
+square7.addEventListener("click", (event) => { handleOnClick(2, 0, ".thirdRow", ".firstCol") });
 
 const square8 = document.querySelector(".thirdRow").querySelector(".secondCol");
-square8.addEventListener("click", (event) => {
-    if (! game.isFilled(2,1)){
-        (game.getPlayerID() == 1) ? square8.querySelector(".squareImage").src = "cross.png" : square8.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(2,1);
-    }
-});
+square8.addEventListener("click", (event) => { handleOnClick(2, 1, ".thirdRow", ".secondCol") });
 
 const square9 = document.querySelector(".thirdRow").querySelector(".thirdCol");
-square9.addEventListener("click", (event) => {
-    if (! game.isFilled(2,2)){
-        (game.getPlayerID() == 1) ? square9.querySelector(".squareImage").src = "cross.png" : square9.querySelector(".squareImage").src = "circle.jpg" 
-        game.fillSquare(2,2);
-    }
-});
+square9.addEventListener("click", (event) => { handleOnClick(2, 2, ".thirdRow", ".thirdCol") });

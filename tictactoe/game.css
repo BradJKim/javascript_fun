@@ -3,8 +3,14 @@ div.title {
     justify-content: center;
 }
 
-div.wrapperDiv{
+div.wrapperDiv {
     display: flex;
+    justify-content: center;
+}
+
+div.conclusion {
+    display: flex;
+    display-direction: center;
     justify-content: center;
 }
 
